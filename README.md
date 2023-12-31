@@ -1,32 +1,14 @@
-# 立ち上げ
+# Welcome to your CDK TypeScript project
 
-```
-$ yarn
-```
+This is a blank project for CDK development with TypeScript.
 
-```
-$ yarn build
-```
+The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
-```
-$ yarn start
-```
+## Useful commands
 
-# 開発環境
-
-```
-$ yarn dev
-```
-
-# 環境変数
-
-| key                | 説明                         | サンプル          |
-| ------------------ | ---------------------------- | ----------------- |
-| CRON_EXPRESSION    | バッチ処理の頻度             | \*/10 \* \* \* \* |
-| ORION_ENDPOINT     | Orion のエンドポイント       |                   |
-| FIWARE_SERVICE     | FiwareService                |                   |
-| FIWARE_SERVICEPATH | FiwareService Path           |                   |
-| USER_POOL_ID       | Cognito の pool              |                   |
-| APP_CLIENT_ID      | Cognito のクライアント       |                   |
-| USERNAME           | ログインユーザー ID（email） |                   |
-| PASSWORD           | ログインパスワード           |                   |
+* `npm run build`   compile typescript to js
+* `npm run watch`   watch for changes and compile
+* `npm run test`    perform the jest unit tests
+* `npx cdk deploy`  deploy this stack to your default AWS account/region
+* `npx cdk diff`    compare deployed stack with current state
+* `npx cdk synth`   emits the synthesized CloudFormation template
