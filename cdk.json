@@ -59,6 +59,36 @@
     "@aws-cdk/aws-rds:auroraClusterChangeScopeOfInstanceParameterGroupWithEachParameters": true,
     "@aws-cdk/aws-appsync:useArnForSourceApiAssociationIdentifier": true,
     "@aws-cdk/aws-rds:preventRenderingDeprecatedCredentials": true,
-    "@aws-cdk/aws-codepipeline-actions:useNewDefaultBranchForCodeCommitSource": true
+    "@aws-cdk/aws-codepipeline-actions:useNewDefaultBranchForCodeCommitSource": true,
+    "dev": {
+      "stackName": "devWeatherImporter",
+      "secretNameUserPass": "dev/weatherImporter/userPass",
+      "secretNameJwt": "dev/weatherImporter/jwt",
+      "userPoolId": "ap-northeast-1_oGGlS2Fyf",
+      "appClientId": "6100d495npnjlmj9ca521g38df",
+      "orionEndpoint": "https://orion.dev.hamamatsu.makeour.city",
+      "orionService": "weather_test",
+      "orionServicepath": ""
+    },
+    "stg": {
+      "stackName": "stgWeatherImporter",
+      "secretNameUserPass": "stg/weatherImporter/userPass",
+      "secretNameJwt": "stg/weatherImporter/jwt",
+      "userPoolId": "",
+      "appClientId": "",
+      "orionEndpoint": "https://orion.stg.hamamatsu.makeour.city",
+      "orionService": "",
+      "orionServicepath": ""
+    },
+    "prd": {
+      "stackName": "prdWeatherImporter",
+      "secretNameUserPass": "prd/weatherImporter/userPass",
+      "secretNameJwt": "prd/weatherImporter/jwt",
+      "userPoolId": "",
+      "appClientId": "",
+      "orionEndpoint": "https://orion.hamamatsu.makeour.city",
+      "orionService": "",
+      "orionServicepath": ""
+    }
   }
 }
