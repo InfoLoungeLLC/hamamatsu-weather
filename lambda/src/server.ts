@@ -1,11 +1,12 @@
 import { Handler } from 'aws-lambda'
 
-import { genRainData, getStreamGaugeData, sendData } from './app'
 import { getJwt } from './helper/cognito'
+import { sendData } from './helper/orion'
 import { getSecret, setSecret } from './helper/secretsManager'
+import { genRainData, getStreamGaugeData } from './app'
 
 /**
- * Username / Password からJWTを生成して格納するハンドラ
+ * Username / Password からJWTを生成して格納するLambdaハンドラ
  */
 export const setJwtHandler: Handler = async () => {
   console.log('新しいJWTを生成中: ' + new Date())
@@ -21,7 +22,7 @@ export const setJwtHandler: Handler = async () => {
 }
 
 /**
- * 定期的にデータを取得してOrionに格納するハンドラ
+ * 定期的にデータを取得してOrionに格納するLambdaハンドラ
  */
 export const importWeatherHandler: Handler = async () => {
    console.log('定期的なジョブを実行中: ' + new Date())

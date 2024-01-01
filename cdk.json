@@ -67,8 +67,8 @@
       "userPoolId": "ap-northeast-1_oGGlS2Fyf",
       "appClientId": "6100d495npnjlmj9ca521g38df",
       "orionEndpoint": "https://orion.dev.hamamatsu.makeour.city",
-      "orionService": "weather_test",
-      "orionServicepath": ""
+      "fiwareService": "weather_test",
+      "fiwareServicePath": ""
     },
     "stg": {
       "stackName": "stgWeatherImporter",
@@ -77,8 +77,8 @@
       "userPoolId": "",
       "appClientId": "",
       "orionEndpoint": "https://orion.stg.hamamatsu.makeour.city",
-      "orionService": "",
-      "orionServicepath": ""
+      "fiwareService": "",
+      "fiwareServicePath": ""
     },
     "prd": {
       "stackName": "prdWeatherImporter",
@@ -87,8 +87,8 @@
       "userPoolId": "",
       "appClientId": "",
       "orionEndpoint": "https://orion.hamamatsu.makeour.city",
-      "orionService": "",
-      "orionServicepath": ""
+      "fiwareService": "",
+      "fiwareServicePath": ""
     }
   }
 }
