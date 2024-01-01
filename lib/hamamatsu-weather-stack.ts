@@ -18,8 +18,8 @@ export interface Context {
   userPoolId: string
   appClientId: string
   orionEndpoint: string
-  orionService: string
-  orionServicepath: string
+  fiwareService: string
+  fiwareServicePath: string
 }
 
 interface HamamatsuWeatherProps extends cdk.StackProps {
@@ -32,8 +32,8 @@ export class HamamatsuWeatherStack extends cdk.Stack {
 
     // 6時間毎にトークンを更新してSecrets Managerに登録するLambda Function
     const setJwtFunction = new NodejsFunction(this, 'setJwtFunction', {
-      entry: path.join(__dirname, '../lambda/src/server.ts'),
       runtime: Runtime.NODEJS_20_X,
+      entry: path.join(__dirname, '../lambda/src/server.ts'),
       handler: 'setJwtHandler',
       timeout: cdk.Duration.minutes(1),
       environment: {
@@ -53,15 +53,15 @@ export class HamamatsuWeatherStack extends cdk.Stack {
     // データを毎分チェックするLambda Function
     const paramsAndSecrets = ParamsAndSecretsLayerVersion.fromVersion(ParamsAndSecretsVersions.V1_0_103)
     const importWeatherFunction = new NodejsFunction(this, 'importWeatherFunction', {
-      entry: path.join(__dirname, '../lambda/src/server.ts'),
       runtime: Runtime.NODEJS_20_X,
+      entry: path.join(__dirname, '../lambda/src/server.ts'),
       handler: 'importWeatherHandler',
       timeout: cdk.Duration.minutes(5),
       environment: {
         SECRET_NAME_JWT: props.context.secretNameJwt,
         ORION_ENDPOINT: props.context.orionEndpoint,
-        FIWARE_SERVICE: props.context.orionService,
-        FIWARE_SERVICEPATH: props.context.orionServicepath,
+        FIWARE_SERVICE: props.context.fiwareService,
+        FIWARE_SERVICE_PATH: props.context.fiwareServicePath,
       },
       paramsAndSecrets, // Use AWS Parameters and Secrets Lambda Extension
     })

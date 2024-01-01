@@ -1,34 +1,9 @@
 import axios from 'axios'
 import dayjs from 'dayjs'
 import papa from 'papaparse'
-import { RAINFALL_OBSERVATORY } from './constants/rainfall_observatory'
-import { checkDataExist, orionAxiosClient } from './helper/orion'
-import { STREAMGAUGE_OBSERVATORY } from './constants/streamgauge_observatory'
 
-export const sendData = async (type: string, id: string, data: any) => {
-  try {
-    const isDataExist = await checkDataExist(type, id)
-    const client = await orionAxiosClient()
-    if (isDataExist) {
-      await client.put(
-        `${process.env.ORION_ENDPOINT}/v2/entities/${id}/attrs?type=${type}`,
-        data
-      )
-    } else {
-      await client.post(
-        `${process.env.ORION_ENDPOINT}/v2/entities`,
-        {
-          type,
-          id,
-          ...data,
-        }
-      )
-    }
-  } catch (error) {
-    console.log(error)
-    throw error
-  }
-}
+import { RAINFALL_OBSERVATORY } from './constants/rainfall_observatory'
+import { STREAMGAUGE_OBSERVATORY } from './constants/streamgauge_observatory'
 
 export const genRainData = async () => {
   try {
