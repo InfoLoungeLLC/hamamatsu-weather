@@ -84,10 +84,10 @@
       "stackName": "prdWeatherImporter",
       "secretNameUserPass": "prd/weatherImporter/userPass",
       "secretNameJwt": "prd/weatherImporter/jwt",
-      "userPoolId": "",
-      "appClientId": "",
+      "userPoolId": "ap-northeast-1_QCBMpGjou",
+      "appClientId": "1a8jq45329cd0obph903ilpea7",
       "orionEndpoint": "https://orion.hamamatsu.makeour.city",
-      "fiwareService": "",
+      "fiwareService": "hamamatsu_weather",
       "fiwareServicePath": ""
     }
   }
