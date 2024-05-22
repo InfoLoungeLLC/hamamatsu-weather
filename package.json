@@ -21,7 +21,7 @@
     "typescript": "5.4.5"
   },
   "dependencies": {
-    "amazon-cognito-identity-js": "6.3.7",
+    "amazon-cognito-identity-js": "6.3.12",
     "aws-cdk-lib": "2.142.1",
     "aws-sdk": "2.1528.0",
     "axios": "1.6.3",
