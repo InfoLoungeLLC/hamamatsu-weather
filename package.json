@@ -24,7 +24,7 @@
   "dependencies": {
     "amazon-cognito-identity-js": "6.3.12",
     "aws-cdk-lib": "2.143.0",
-    "aws-sdk": "2.1625.0",
+    "aws-sdk": "2.1628.0",
     "axios": "1.7.2",
     "constructs": "10.3.0",
     "dayjs": "1.11.11",
