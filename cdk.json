@@ -61,34 +61,70 @@
     "@aws-cdk/aws-rds:preventRenderingDeprecatedCredentials": true,
     "@aws-cdk/aws-codepipeline-actions:useNewDefaultBranchForCodeCommitSource": true,
     "dev": {
-      "stackName": "devWeatherImporter",
-      "secretNameUserPass": "dev/weatherImporter/userPass",
-      "secretNameJwt": "dev/weatherImporter/jwt",
-      "userPoolId": "ap-northeast-1_oGGlS2Fyf",
-      "appClientId": "6100d495npnjlmj9ca521g38df",
-      "orionEndpoint": "https://orion.dev.hamamatsu.makeour.city",
-      "fiwareService": "weather_test",
-      "fiwareServicePath": ""
+      "weatherStack": {
+        "stackName": "devWeatherImporter",
+        "secretNameUserPass": "dev/weatherImporter/userPass",
+        "secretNameJwt": "dev/weatherImporter/jwt",
+        "userPoolId": "ap-northeast-1_oGGlS2Fyf",
+        "appClientId": "6100d495npnjlmj9ca521g38df",
+        "orionEndpoint": "https://orion.dev.hamamatsu.makeour.city",
+        "fiwareService": "weather_test",
+        "fiwareServicePath": ""
+      },
+      "pifaaStack": {
+        "stackName": "devPifaaImporter",
+        "secretNameJwt": "dev/weatherImporter/jwt",
+        "secretPifaaUserPass": "dev/pifaa/userPass",
+        "secretPifaaCookies": "dev/pifaa/cookies",
+        "orionEndpoint": "https://orion.dev.hamamatsu.makeour.city",
+        "fiwareService": "pifaa_test",
+        "fiwareServicePath": "",
+        "pifaaEndpoint": "https://ap-northeast-1.pifaa.cloud"
+      }
     },
     "stg": {
-      "stackName": "stgWeatherImporter",
-      "secretNameUserPass": "stg/weatherImporter/userPass",
-      "secretNameJwt": "stg/weatherImporter/jwt",
-      "userPoolId": "",
-      "appClientId": "",
-      "orionEndpoint": "https://orion.stg.hamamatsu.makeour.city",
-      "fiwareService": "",
-      "fiwareServicePath": ""
+      "weatherStack": {
+        "stackName": "stgWeatherImporter",
+        "secretNameUserPass": "stg/weatherImporter/userPass",
+        "secretNameJwt": "stg/weatherImporter/jwt",
+        "userPoolId": "",
+        "appClientId": "",
+        "orionEndpoint": "https://orion.stg.hamamatsu.makeour.city",
+        "fiwareService": "",
+        "fiwareServicePath": ""
+      },
+      "pifaaStack": {
+        "stackName": "stgPifaaImporter",
+        "secretNameJwt": "stg/weatherImporter/jwt",
+        "secretPifaaUserPass": "stg/pifaa/userPass",
+        "secretPifaaCookies": "stg/pifaa/cookies",
+        "orionEndpoint": "https://orion.stg.hamamatsu.makeour.city",
+        "fiwareService": "",
+        "fiwareServicePath": "",
+        "pifaaEndpoint": "https://ap-northeast-1.pifaa.cloud"
+      }
     },
     "prd": {
-      "stackName": "prdWeatherImporter",
-      "secretNameUserPass": "prd/weatherImporter/userPass",
-      "secretNameJwt": "prd/weatherImporter/jwt",
-      "userPoolId": "ap-northeast-1_QCBMpGjou",
-      "appClientId": "1a8jq45329cd0obph903ilpea7",
-      "orionEndpoint": "https://orion.hamamatsu.makeour.city",
-      "fiwareService": "hamamatsu_weather",
-      "fiwareServicePath": ""
+      "weatherStack": {
+        "stackName": "prdWeatherImporter",
+        "secretNameUserPass": "prd/weatherImporter/userPass",
+        "secretNameJwt": "prd/weatherImporter/jwt",
+        "userPoolId": "ap-northeast-1_QCBMpGjou",
+        "appClientId": "1a8jq45329cd0obph903ilpea7",
+        "orionEndpoint": "https://orion.hamamatsu.makeour.city",
+        "fiwareService": "hamamatsu_weather",
+        "fiwareServicePath": ""
+      },
+      "pifaaStack": {
+        "stackName": "prdPifaaImporter",
+        "secretNameJwt": "prd/weatherImporter/jwt",
+        "secretPifaaUserPass": "prd/pifaa/userPass",
+        "secretPifaaCookies": "prd/pifaa/cookies",
+        "orionEndpoint": "https://orion.hamamatsu.makeour.city",
+        "fiwareService": "hamamatsu_pifaa",
+        "fiwareServicePath": "",
+        "pifaaEndpoint": "https://ap-northeast-1.pifaa.cloud"
+      }
     }
   }
 }

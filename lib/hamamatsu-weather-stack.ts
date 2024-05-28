@@ -33,7 +33,7 @@ export class HamamatsuWeatherStack extends cdk.Stack {
     // 6時間毎にトークンを更新してSecrets Managerに登録するLambda Function
     const setJwtFunction = new NodejsFunction(this, 'setJwtFunction', {
       runtime: Runtime.NODEJS_20_X,
-      entry: path.join(__dirname, '../lambda/src/server.ts'),
+      entry: path.join(__dirname, '../lambda/src/server.weather.ts'),
       handler: 'setJwtHandler',
       timeout: cdk.Duration.minutes(1),
       environment: {
@@ -54,7 +54,7 @@ export class HamamatsuWeatherStack extends cdk.Stack {
     const paramsAndSecrets = ParamsAndSecretsLayerVersion.fromVersion(ParamsAndSecretsVersions.V1_0_103)
     const importWeatherFunction = new NodejsFunction(this, 'importWeatherFunction', {
       runtime: Runtime.NODEJS_20_X,
-      entry: path.join(__dirname, '../lambda/src/server.ts'),
+      entry: path.join(__dirname, '../lambda/src/server.weather.ts'),
       handler: 'importWeatherHandler',
       timeout: cdk.Duration.minutes(5),
       environment: {
