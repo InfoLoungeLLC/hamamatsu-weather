@@ -39,7 +39,7 @@ export class HamamatsuPifaaStack extends cdk.Stack {
       environment: {
         SECRET_PIFAA_USER_PASS: props.context.secretPifaaUserPass,
         SECRET_PIFAA_COOKIES: props.context.secretPifaaCookies,
-        PIFAA_ENDPOINT: props.context.pifaaEndpoint
+        PIFAA_ENDPOINT: props.context.pifaaEndpoint,
       }
     })
     new Rule(this, 'ruleEvery30minutes', {
@@ -49,7 +49,7 @@ export class HamamatsuPifaaStack extends cdk.Stack {
       ]
     })
 
-    // データを毎分チェックするLambda Function
+    // 滞在人数を10分毎に更新するLambda Function
     const paramsAndSecrets = ParamsAndSecretsLayerVersion.fromVersion(ParamsAndSecretsVersions.V1_0_103)
     const importPeopleFlowFunction = new NodejsFunction(this, 'importPeopleFlowFunction', {
       runtime: Runtime.NODEJS_20_X,
@@ -57,15 +57,17 @@ export class HamamatsuPifaaStack extends cdk.Stack {
       handler: 'importPeopleFlowHandler',
       timeout: cdk.Duration.minutes(5),
       environment: {
+        SECRET_PIFAA_COOKIES: props.context.secretPifaaCookies,
         SECRET_NAME_JWT: props.context.secretNameJwt,
         ORION_ENDPOINT: props.context.orionEndpoint,
         FIWARE_SERVICE: props.context.fiwareService,
         FIWARE_SERVICE_PATH: props.context.fiwareServicePath,
+        PIFAA_ENDPOINT: props.context.pifaaEndpoint,
       },
       paramsAndSecrets, // Use AWS Parameters and Secrets Lambda Extension
     })
-    new Rule(this, 'ruleEveryMinute', {
-      schedule: Schedule.cron({ minute: '*' }),
+    new Rule(this, 'ruleEvery10Minute', {
+      schedule: Schedule.cron({ minute: '*/10' }),
       targets: [
         new LambdaFunction(importPeopleFlowFunction, { retryAttempts: 0 })
       ]
@@ -75,9 +77,10 @@ export class HamamatsuPifaaStack extends cdk.Stack {
     const secretPifaaUserPass = Secret.fromSecretNameV2(this, 'secretPifaaUserPass', props.context.secretPifaaUserPass)
     secretPifaaUserPass.grantRead(setPifaaCookieFunction)
 
-    // PifaaのCookiesシークレットにはsetPifaaCookieFunctionから書き込み可能
+    // PifaaのCookiesシークレットにはsetPifaaCookieFunctionから書き込み、importPeopleFlowFunctionからの読み込み可能
     const secretPifaaCookies = Secret.fromSecretNameV2(this, 'secretPifaaCookies', props.context.secretPifaaCookies)
     secretPifaaCookies.grantWrite(setPifaaCookieFunction)
+    secretPifaaCookies.grantRead(importPeopleFlowFunction)
 
     // JWTのシークレットはimportPeopleFlowFunctionからの読み取り許可
     const secretJwt = Secret.fromSecretNameV2(this, 'secretJwt', props.context.secretNameJwt)

@@ -22,6 +22,27 @@ const orionAxiosClient = async (
 }
 
 /**
+ * Orionのデータを取得する (存在しない場合はエラー)
+ * @param type NGSIのType
+ * @param id NGSIのID
+ */
+export const getData = async (type: string, id: string)  => {
+  const client = await orionAxiosClient(
+    process.env.FIWARE_SERVICE ?? '',
+    process.env.FIWARE_SERVICE_PATH ?? '',
+  )
+  try {
+    const result = await client.get(
+      `${process.env.ORION_ENDPOINT}/v2/entities/${id}?type=${type}`
+    )
+    return result.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+/**
  * Orionにデータを登録する (新規はPOST/既存はPUT)
  * @param type NGSIのType
  * @param id NGSIのID
