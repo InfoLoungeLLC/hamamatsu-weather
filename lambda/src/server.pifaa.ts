@@ -163,7 +163,7 @@ export const importEnvironmentDataHandler: Handler = async () => {
         payload = {
           dateObserved: {
             type: 'DateTime',
-            value: new Date(record.unix_timestamp),
+            value: new Date(record.unix_timestamp * 1e3),
           },
           currentTemperature: {
             type: 'Number',
@@ -175,7 +175,7 @@ export const importEnvironmentDataHandler: Handler = async () => {
         payload = {
           dateObserved: {
             type: 'DateTime',
-            value: new Date(record.unix_timestamp),
+            value: new Date(record.unix_timestamp * 1e3),
           },
           currentHumidity: {
             type: 'Number',
@@ -187,7 +187,7 @@ export const importEnvironmentDataHandler: Handler = async () => {
         payload = {
           dateObserved: {
             type: 'DateTime',
-            value: new Date(record.unix_timestamp),
+            value: new Date(record.unix_timestamp * 1e3),
           },
           currentCo2: {
             type: 'Number',
@@ -203,5 +203,6 @@ export const importEnvironmentDataHandler: Handler = async () => {
   } catch (err) {
     console.log(err)
     console.error(err)
+    console.log(err.response.data)
   }
 }
