@@ -109,3 +109,99 @@ export const importPeopleFlowHandler: Handler = async () => {
     console.log(error)
   }
 }
+
+// 環境センサーID
+const environmentDataSensorId = '017fbf7850b5da0adc59c80b00000000'
+
+/**
+ * 10分おきに環境データを取得し、Orionに格納するLambdaハンドラ
+ * 気温・湿度・二酸化炭素濃度
+ */
+export const importEnvironmentDataHandler: Handler = async () => {
+  console.log('定期的な環境データ取得ジョブを実行:', new Date())
+
+  try {
+
+    const endpoint = process.env.PIFAA_ENDPOINT ?? ''
+    console.log(process.env.SECRET_PIFAA_COOKIES)
+
+    const cookies: {[key: string]: string} = await getSecretFromCache(process.env.SECRET_PIFAA_COOKIES ?? '')
+    const cookieString = Object.keys(cookies).reduce((str, key) => str + `${key}=${cookies[key]}; `, '')
+
+    const currentTimestamp = Math.floor(Date.now() / 1e3)
+    const roundTimestamp10Min = Math.floor(currentTimestamp / 600) * 600 // 10分単位切り下げ
+    const timestamp_start = roundTimestamp10Min - 600 * 1 // 10分前
+    const timestamp_end   = roundTimestamp10Min // 現在
+
+    // 10分前~現在のデータをPifaa Cloudから取得する
+    console.log(`${dayjs(timestamp_start * 1e3).tz().format()}から${dayjs(timestamp_end * 1e3).tz().format()}のデータを取り込みます`)
+    const result = await axios.get(
+      `${endpoint}/api/v1/sensor/data/current`, {
+        headers: {
+          Cookie: cookieString
+        },
+        params: {
+          param: JSON.stringify({
+            device_id: environmentDataSensorId,
+            sensor_types: [
+              'temperature',
+              'humidity',
+              'co2',
+            ],
+            timestamp_start,
+          })
+        }
+      }
+    )
+    const data: any[] = result.data
+
+    for (const record of data) {
+      let payload
+      let ngsiType
+      if (record.path1 === '3303' && record.path3 === '28320') {
+        ngsiType = 'envTemperature'
+        payload = {
+          dateObserved: {
+            type: 'DateTime',
+            value: new Date(record.unix_timestamp),
+          },
+          currentTemperature: {
+            type: 'Number',
+            value: Number(record.value),
+          }
+        }
+      } else if (record.path1 === '3304' && record.path3 === '28320') {
+        ngsiType = 'envHumidity'
+        payload = {
+          dateObserved: {
+            type: 'DateTime',
+            value: new Date(record.unix_timestamp),
+          },
+          currentHumidity: {
+            type: 'Number',
+            value: Number(record.value),
+          }
+        }
+      } else if (record.path1 === '38008' && record.path3 === '28320') {
+        ngsiType = 'envCo2'
+        payload = {
+          dateObserved: {
+            type: 'DateTime',
+            value: new Date(record.unix_timestamp),
+          },
+          currentCo2: {
+            type: 'Number',
+            value: Number(record.value),
+          }
+        }
+      } else {
+        continue
+      }
+
+      await sendData(ngsiType, `${environmentDataSensorId}_${record.path2}`, payload )
+    }
+  } catch (err) {
+    console.log(err)
+    console.error(err)
+  }
+}

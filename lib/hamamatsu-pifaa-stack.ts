@@ -66,10 +66,28 @@ export class HamamatsuPifaaStack extends cdk.Stack {
       },
       paramsAndSecrets, // Use AWS Parameters and Secrets Lambda Extension
     })
+
+    // 気温・湿度・二酸化炭素濃度を10分毎に更新するLambda Function
+    const importEnvironmentDataFunction = new NodejsFunction(this, 'importEnvironmentDataFunction', {
+      runtime: Runtime.NODEJS_20_X,
+      entry: path.join(__dirname, '../lambda/src/server.pifaa.ts'),
+      handler: 'importEnvironmentDataHandler',
+      timeout: cdk.Duration.minutes(5),
+      environment: {
+        SECRET_PIFAA_COOKIES: props.context.secretPifaaCookies,
+        SECRET_NAME_JWT: props.context.secretNameJwt,
+        ORION_ENDPOINT: props.context.orionEndpoint,
+        FIWARE_SERVICE: props.context.fiwareService,
+        FIWARE_SERVICE_PATH: props.context.fiwareServicePath,
+        PIFAA_ENDPOINT: props.context.pifaaEndpoint,
+      },
+      paramsAndSecrets,
+    })
     new Rule(this, 'ruleEvery10Minute', {
       schedule: Schedule.cron({ minute: '*/10' }),
       targets: [
-        new LambdaFunction(importPeopleFlowFunction, { retryAttempts: 0 })
+        new LambdaFunction(importPeopleFlowFunction, { retryAttempts: 0 }),
+        new LambdaFunction(importEnvironmentDataFunction, { retryAttempts: 0 }),
       ]
     })
 
@@ -81,9 +99,11 @@ export class HamamatsuPifaaStack extends cdk.Stack {
     const secretPifaaCookies = Secret.fromSecretNameV2(this, 'secretPifaaCookies', props.context.secretPifaaCookies)
     secretPifaaCookies.grantWrite(setPifaaCookieFunction)
     secretPifaaCookies.grantRead(importPeopleFlowFunction)
+    secretPifaaCookies.grantRead(importEnvironmentDataFunction)
 
     // JWTのシークレットはimportPeopleFlowFunctionからの読み取り許可
     const secretJwt = Secret.fromSecretNameV2(this, 'secretJwt', props.context.secretNameJwt)
     secretJwt.grantRead(importPeopleFlowFunction)
+    secretJwt.grantRead(importEnvironmentDataFunction)
   }
 }
