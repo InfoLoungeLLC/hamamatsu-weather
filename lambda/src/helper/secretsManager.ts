@@ -18,11 +18,27 @@ export const getSecretFromCache = async (secretId: string): Promise<any> => {
       'X-Aws-Parameters-Secrets-Token': process.env.AWS_SESSION_TOKEN,
     }
   }
-  const response = await axios.get(requestEndpoint, requestOptions)
-  if (response.data.SecretString === undefined) {
-    return undefined
+
+  // not ready to serve traffic, please wait エラーに対応してリトライ処理を追加
+  const maxRetries = 3
+  const retryDelay = 1000
+
+  let attempt = 0
+  while (attempt < maxRetries) {
+    try {
+      const response = await axios.get(requestEndpoint, requestOptions)
+      if (response.data.SecretString === undefined) {
+        return undefined
+      }
+      return JSON.parse(response.data.SecretString)
+    } catch (error) {
+      console.log(`Attempt ${attempt} failed: ${error}`)
+      await new Promise(resolve => setTimeout(resolve, retryDelay))
+      attempt++
+    }
   }
-  return JSON.parse(response.data.SecretString)
+  console.log('Max retries reached. Throwing error.')
+  throw new Error('Failed to retrieve secret after maximum retries.')
 }
 
 /**

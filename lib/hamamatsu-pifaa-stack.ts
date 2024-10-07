@@ -4,7 +4,7 @@ import { LambdaFunction } from 'aws-cdk-lib/aws-events-targets'
 import {
   Runtime,
   ParamsAndSecretsLayerVersion,
-  ParamsAndSecretsVersions
+  ParamsAndSecretsVersions,
 } from 'aws-cdk-lib/aws-lambda'
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs'
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager'
@@ -20,6 +20,8 @@ export interface Context {
   fiwareService: string
   fiwareServicePath: string
   pifaaEndpoint: string
+  peopleFlowSensorId: string
+  environmentDataSensorId: string
 }
 
 interface HamamatsuPifaaProps extends cdk.StackProps {
@@ -63,6 +65,7 @@ export class HamamatsuPifaaStack extends cdk.Stack {
         FIWARE_SERVICE: props.context.fiwareService,
         FIWARE_SERVICE_PATH: props.context.fiwareServicePath,
         PIFAA_ENDPOINT: props.context.pifaaEndpoint,
+        SENSOR_ID: props.context.peopleFlowSensorId,
       },
       paramsAndSecrets, // Use AWS Parameters and Secrets Lambda Extension
     })
@@ -80,6 +83,7 @@ export class HamamatsuPifaaStack extends cdk.Stack {
         FIWARE_SERVICE: props.context.fiwareService,
         FIWARE_SERVICE_PATH: props.context.fiwareServicePath,
         PIFAA_ENDPOINT: props.context.pifaaEndpoint,
+        SENSOR_ID: props.context.environmentDataSensorId,
       },
       paramsAndSecrets,
     })

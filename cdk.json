@@ -79,7 +79,9 @@
         "orionEndpoint": "https://orion.dev.hamamatsu.makeour.city",
         "fiwareService": "pifaa_test",
         "fiwareServicePath": "",
-        "pifaaEndpoint": "https://ap-northeast-1.pifaa.cloud"
+        "pifaaEndpoint": "https://ap-northeast-1.pifaa.cloud",
+        "peopleFlowSensorId": "INFO.LOUNGE_00114116",
+        "environmentDataSensorId": "017fbf7850b5da0adc59c80b00000000"
       }
     },
     "stg": {
@@ -101,7 +103,9 @@
         "orionEndpoint": "https://orion.stg.hamamatsu.makeour.city",
         "fiwareService": "",
         "fiwareServicePath": "",
-        "pifaaEndpoint": "https://ap-northeast-1.pifaa.cloud"
+        "pifaaEndpoint": "https://ap-northeast-1.pifaa.cloud",
+        "peopleFlowSensorId": "INFO.LOUNGE_00114116",
+        "environmentDataSensorId": "017fbf7850b5da0adc59c80b00000000"
       }
     },
     "prd": {
@@ -123,7 +127,9 @@
         "orionEndpoint": "https://orion.hamamatsu.makeour.city",
         "fiwareService": "hamamatsu_pifaa",
         "fiwareServicePath": "",
-        "pifaaEndpoint": "https://ap-northeast-1.pifaa.cloud"
+        "pifaaEndpoint": "https://ap-northeast-1.pifaa.cloud",
+        "peopleFlowSensorId": "HAMAMATSU-CITY_00324084",
+        "environmentDataSensorId": "017ed23ee24032205aa7cb7700000000"
       }
     }
   }

@@ -12,9 +12,6 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Asia/Tokyo");
 
-// 人流センサーID
-const peopleFlowSensorId = 'INFO.LOUNGE_00114116'
-
 /**
  * Username / Password でPifaaにログインし、Cookie一式をSecrets Managerに格納するLambdaハンドラ (30分毎に実行)
  */
@@ -47,14 +44,13 @@ export const setPifaaCookie: Handler = async () => {
 export const importPeopleFlowHandler: Handler = async () => {
   console.log('定期的なジョブを実行中: ' + new Date())
 
+  const endpoint = process.env.PIFAA_ENDPOINT ?? ''
+  const peopleFlowSensorId = process.env.SENSOR_ID ?? ''
+
+  const cookies: {[key: string]: string} = await getSecretFromCache(process.env.SECRET_PIFAA_COOKIES ?? '')
+  const cookieString = Object.keys(cookies).reduce((str, key) => str + `${key}=${cookies[key]}; `, '')
+
   try {
-    const endpoint = process.env.PIFAA_ENDPOINT ?? ''
-
-    console.log(process.env.SECRET_PIFAA_COOKIES)
-
-    const cookies: {[key: string]: string} = await getSecretFromCache(process.env.SECRET_PIFAA_COOKIES ?? '')
-    const cookieString = Object.keys(cookies).reduce((str, key) => str + `${key}=${cookies[key]}; `, '')
-
     const currentTimestamp = Math.floor(Date.now() / 1e3)
     const roundTimestamp10Min = Math.floor(currentTimestamp / 600) * 600 // 10分単位切り下げ
     const timestamp_start = roundTimestamp10Min - 600 * 2 // 20分前
@@ -110,9 +106,6 @@ export const importPeopleFlowHandler: Handler = async () => {
   }
 }
 
-// 環境センサーID
-const environmentDataSensorId = '017fbf7850b5da0adc59c80b00000000'
-
 /**
  * 10分おきに環境データを取得し、Orionに格納するLambdaハンドラ
  * 気温・湿度・二酸化炭素濃度
@@ -120,14 +113,13 @@ const environmentDataSensorId = '017fbf7850b5da0adc59c80b00000000'
 export const importEnvironmentDataHandler: Handler = async () => {
   console.log('定期的な環境データ取得ジョブを実行:', new Date())
 
+  const endpoint = process.env.PIFAA_ENDPOINT ?? ''
+  const environmentDataSensorId = process.env.SENSOR_ID ?? ''
+
+  const cookies: {[key: string]: string} = await getSecretFromCache(process.env.SECRET_PIFAA_COOKIES ?? '')
+  const cookieString = Object.keys(cookies).reduce((str, key) => str + `${key}=${cookies[key]}; `, '')
+
   try {
-
-    const endpoint = process.env.PIFAA_ENDPOINT ?? ''
-    console.log(process.env.SECRET_PIFAA_COOKIES)
-
-    const cookies: {[key: string]: string} = await getSecretFromCache(process.env.SECRET_PIFAA_COOKIES ?? '')
-    const cookieString = Object.keys(cookies).reduce((str, key) => str + `${key}=${cookies[key]}; `, '')
-
     const currentTimestamp = Math.floor(Date.now() / 1e3)
     const roundTimestamp10Min = Math.floor(currentTimestamp / 600) * 600 // 10分単位切り下げ
     const timestamp_start = roundTimestamp10Min - 600 * 1 // 10分前
