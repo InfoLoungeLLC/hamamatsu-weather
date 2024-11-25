@@ -11,7 +11,7 @@
     "cdk": "cdk"
   },
   "devDependencies": {
-    "@types/aws-lambda": "8.10.145",
+    "@types/aws-lambda": "8.10.146",
     "@types/jest": "29.5.13",
     "@types/papaparse": "5.3.14",
     "@types/source-map-support": "0.5.10",
